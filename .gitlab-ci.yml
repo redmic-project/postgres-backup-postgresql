@@ -3,9 +3,9 @@ stages:
   - test-package
   - deploy
 
-docker-build-dev:
+docker-build-commit-non-master-branches:
   stage: package
-  image: redmic/docker-gitlab
+  image: docker:stable
   variables:
     DOCKER_DRIVER: overlay2
   services:
@@ -14,26 +14,45 @@ docker-build-dev:
     - branches
   except:
     - master
+    - schedules
   script:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-latest .
     - docker push ${CI_REGISTRY_IMAGE}
 
-docker-build-pro:
+docker-build-commit-master-branch:
   stage: package
-  image: redmic/docker-gitlab
+  image: docker:stable
   variables:
     DOCKER_DRIVER: overlay2
   services:
     - docker:dind
   only:
     - master
+  except:
+    - schedules
   script:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} -t ${CI_REGISTRY_IMAGE}:latest .
     - docker push ${CI_REGISTRY_IMAGE}
 
-container_scanning:
+docker-tag-already-built-image:
+  stage: package
+  image: docker:stable
+  variables:
+    DOCKER_DRIVER: overlay2
+  services:
+    - docker:dind
+  only:
+    - tags
+  except:
+    - schedules
+  script:
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} ${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}
+    - docker push ${CI_REGISTRY_IMAGE}
+
+container-scanning:
   stage: test-package
   image: docker:stable
   variables:
@@ -44,7 +63,7 @@ container_scanning:
   only:
     - branches
   except:
-    - master
+    - schedules
   script:
     - docker run -d --name db arminc/clair-db:latest
     - docker run -p 6060:6060 --link db:postgres -d --name clair arminc/clair-local-scan:v2.0.1
@@ -55,30 +74,60 @@ container_scanning:
     - mv clair-scanner_linux_amd64 clair-scanner
     - chmod +x clair-scanner
     - touch clair-whitelist.yml
-    - ./clair-scanner -c http://docker:6060 --ip $(hostname -i) -r gl-sast-container-report.json -l clair.log -w clair-whitelist.yml ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} || true
+    - >
+      ./clair-scanner -c http://docker:6060 --ip $(hostname -i) -r gl-sast-container-report.json -l clair.log
+      -w clair-whitelist.yml ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} || true
   artifacts:
     paths: [gl-sast-container-report.json]
 
-
-deploy-backup-dev:
+deploy-dev:
   stage: deploy
-  image: redmic/docker-gitlab
+  image: registry.gitlab.com/redmic-project/docker/docker-deploy:latest
   variables:
     DOCKER_DRIVER: overlay2
     SSH_REMOTE: ${DEV_SSH_REMOTE}
     SERVICE: ${CI_PROJECT_NAME}
+    IMAGE_NAME: ${CI_REGISTRY_IMAGE}
     IMAGE_TAG: ${CI_COMMIT_SHA}
     COMPOSE_FILE: docker-compose.tmpl.yml:docker-compose.dev.yml
   services:
     - docker:dind
   script:
     - >
-      deploy.sh DOCKER_ENV_CI_REGISTRY_IMAGE=${DOCKER_ENV_CI_REGISTRY_IMAGE} COMPOSE_FILE=${COMPOSE_FILE}
+      deploy.sh IMAGE_NAME=${IMAGE_NAME} IMAGE_TAG=${IMAGE_TAG} COMPOSE_FILE=${COMPOSE_FILE}
       POSTGRES_USER=${POSTGRES_USER} POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       POSTGRES_HOSTNAME=${POSTGRES_HOSTNAME} BUCKET_BACKUP_DB=${BUCKET_BACKUP_DB}
       AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
   environment:
     name: dev
   only:
-    - dev
+    - branches
+  except:
+    - master
+    - schedules
+  when: manual
+
+deploy-pro:
+  stage: deploy
+  image: registry.gitlab.com/redmic-project/docker/docker-deploy:latest
+  variables:
+    DOCKER_DRIVER: overlay2
+    SSH_REMOTE: ${PRO_SSH_REMOTE}
+    STACK: postgres
+    SERVICES_TO_CHECK: postgres_${CI_PROJECT_NAME}
+    IMAGE_NAME: ${CI_REGISTRY_IMAGE}
+    IMAGE_TAG: ${CI_COMMIT_SHA}
+    COMPOSE_FILE: docker-compose.tmpl.yml:docker-compose.prod.yml
+  services:
+    - docker:dind
+  script:
+    - >
+      deploy.sh IMAGE_NAME=${IMAGE_NAME} IMAGE_TAG=${IMAGE_TAG} COMPOSE_FILE=${COMPOSE_FILE}
+      POSTGRES_USER=${POSTGRES_USER} POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      POSTGRES_HOSTNAME=${POSTGRES_HOSTNAME} BUCKET_BACKUP_DB=${BUCKET_BACKUP_DB}
+      AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+  environment:
+    name: pro
+  only:
+    - master
   when: manual

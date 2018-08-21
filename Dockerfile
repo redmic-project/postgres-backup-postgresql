@@ -1,7 +1,9 @@
 FROM alpine:3.7
 
+LABEL maintainer="info@redmic.es"
+
 ENV POSTGRES_PORT="5432" \
-	POSTGRES_HOSTNAME="postgresql-master" \
+	POSTGRES_HOSTNAME="postgresql" \
 	POSTGRES_USER="postgres" \
 	POSTGRES_PASSWORD="password" \
 	POSTGRES_PASS_FILE='/root/.pgpass' \
@@ -9,15 +11,14 @@ ENV POSTGRES_PORT="5432" \
 	AWS_DEFAULT_REGION="eu-west-1" \
 	AWS_OUTPUT="json"
 
-COPY scripts /usr/local/bin
+COPY scripts /
 
-
-RUN apk add --no-cache postgresql-client \
- 			python3 \
-			bash && \
-	pip3 install --no-cache-dir --upgrade awscli && \
+RUN apk add --no-cache \
+		postgresql-client \
+		python3 \
+		bash && \
 	rm -rf /var/cache/apk/* && \
-	mkdir -p $POSTGRES_DUMP_PATH && \
-	chmod +x /usr/local/bin/*.sh
+	pip3 install --no-cache-dir --upgrade \
+		awscli
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]

@@ -1,0 +1,14 @@
+version: '3.5'
+
+services:
+  backup-db:
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+          - node.labels.workerid == ${DESIRED_WORKER_ID}
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
