@@ -11,4 +11,11 @@ services:
           - engine.labels.availability_zone == ${AWS_REGION}${DESIRED_WORKER_ID}
       restart_policy:
         condition: on-failure
-        max_attempts: 3
+        delay: 1m
+        window: 3m
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          memory: 410M
