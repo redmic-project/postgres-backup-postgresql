@@ -43,7 +43,18 @@ function create_pgpass() {
 function dump_all() {
 
 	echo "Creating database backup"
-	pg_dumpall -h ${POSTGRES_HOSTNAME} -U ${POSTGRES_USER} --clean > ${POSTGRES_DUMP_PATH}/${DUMP_FILENAME}
+	if pg_dumpall -h ${POSTGRES_HOSTNAME} -U ${POSTGRES_USER} --clean > ${POSTGRES_DUMP_PATH}/${DUMP_FILENAME}
+	then
+		file_size=$(wc -c <"${POSTGRES_DUMP_PATH}/${ZIP_FILENAME}")
+		if [ ${file_size} -eq 0 ]; then
+			echo "ERROR created empty backup"
+			exit 1
+		fi
+		echo "Backup created"
+	else
+		echo "ERROR creating backup"
+		exit 1
+	fi
 }
 
 function compress() {
@@ -53,6 +64,7 @@ function compress() {
 	cd ${POSTGRES_DUMP_PATH}
 	tar czf ${ZIP_FILENAME} ${DUMP_FILENAME}
 	cd ${WORKDIR}
+	echo "Backup compressed"
 }
 
 function upload_s3() {
@@ -67,26 +79,27 @@ function clean_dump() {
 	rm -f ${POSTGRES_DUMP_PATH}/*
 }
 
-mkdir -p ${POSTGRES_DUMP_PATH}
 
-check_constraint_variable
+function main() {
 
-# Create pgpass file if not exists it
-if [ ! -f ${PGPASSFILE} ]
-then
-	create_pgpass
-fi
+	check_constraint_variable
 
-dump_all
+	mkdir -p ${POSTGRES_DUMP_PATH}
 
-if [ -f ${POSTGRES_DUMP_PATH}/${DUMP_FILENAME} ]
-then
-	compress
-
-	if [ -f ${POSTGRES_DUMP_PATH}/${ZIP_FILENAME} ]
+	# Create pgpass file if not exists it
+	if [ ! -f ${PGPASSFILE} ]
 	then
-		upload_s3
+		create_pgpass
 	fi
 
-	clean_dump
-fi
+	dump_all
+
+	if [ -f ${POSTGRES_DUMP_PATH}/${DUMP_FILENAME} ]
+	then
+		compress
+		upload_s3
+		clean_dump
+	fi
+}
+
+main
