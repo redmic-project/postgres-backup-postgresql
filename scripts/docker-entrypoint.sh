@@ -9,10 +9,8 @@ DUMP_FILENAME="${DUMP_FILENAME:-db.dump}"
 TIMEFORMAT="%R"
 EXISTS_ERROR=0
 
-PUSHGATEWAY_HOST="pushgateway:9091"
+: ${PUSHGATEWAY_HOST:="pushgateway:9091"}
 : ${PUSHGATEWAY_JOB:=${POSTGRES_HOSTNAME}}
-
-
 
 
 function check_constraint_variable() {
