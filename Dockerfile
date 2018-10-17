@@ -14,6 +14,7 @@ ENV POSTGRES_PORT="5432" \
 COPY scripts /
 
 RUN apk add --no-cache \
+		curl \
 		postgresql-client \
 		python3 \
 		bash && \
