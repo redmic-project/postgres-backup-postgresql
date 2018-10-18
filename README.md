@@ -18,3 +18,4 @@ PushGateWay.
 | AWS_DEFAULT_REGION    	| Region AWS                    	| eu-west-1         	|
 | PUSHGATEWAY_HOST      	| PushGateWay hostname          	| pushgateway:9091  	|
 | PUSHGATEWAY_JOB       	| PushGateWay job name          	| POSTGRES_HOSTNAME 	|
+| GZIP                      ! Compression ratio                 | -9                    |

@@ -10,7 +10,8 @@ ENV POSTGRES_PORT="5432" \
 	POSTGRES_DUMP_PATH="/tmp/backup" \
 	AWS_DEFAULT_REGION="eu-west-1" \
 	PUSHGATEWAY_HOST="pushgateway:9091" \
-	AWS_OUTPUT="json"
+	AWS_OUTPUT="json" \
+	GZIP="-9"
 
 COPY scripts /
 
