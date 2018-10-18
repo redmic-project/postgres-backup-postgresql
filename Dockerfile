@@ -9,6 +9,7 @@ ENV POSTGRES_PORT="5432" \
 	POSTGRES_PASS_FILE='/root/.pgpass' \
 	POSTGRES_DUMP_PATH="/tmp/backup" \
 	AWS_DEFAULT_REGION="eu-west-1" \
+	PUSHGATEWAY_HOST="pushgateway:9091" \
 	AWS_OUTPUT="json"
 
 COPY scripts /
