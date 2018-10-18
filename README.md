@@ -7,7 +7,7 @@ PushGateWay.
 
 # Variables
 |          Name         	|          Description          	|      Default      	|
-|:---------------------:	|:-----------------------------:	|:-----------------:	|
+|---------------------------|-----------------------------------|----------------------	|
 | POSTGRES_USER         	| Database username             	| postgres          	|
 | POSTGRES_PASSWORD     	| Database password             	| password          	|
 | POSTGRES_HOSTNAME     	| Database hostname             	| postgresql        	|
@@ -22,7 +22,7 @@ PushGateWay.
 
 # Metrics
 |                           Name                           	|                        Description                       	|
-|:--------------------------------------------------------:	|:--------------------------------------------------------:	|
+|-----------------------------------------------------------|-----------------------------------------------------------|
 | backup_db{label="redmic"}                                	| Outcome of the backup database job (0=failed, 1=success) 	|
 | backup_duration_seconds{label="redmic",stage="dump"}     	| Duration of create dump execution in seconds             	|
 | backup_duration_seconds{label="redmic",stage="compress"} 	| Duration of compress dump execution in seconds           	|
