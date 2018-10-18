@@ -1,7 +1,7 @@
 # Backup DB
-Este proyecto crea un docker base que permite crear backup de
-bases de datos PostgreSQL y subirlas a S3, además de publica
-métricas a PushGateWay, con las que seguir su funcionamiento.
+Backup DB is a docker for create database backup (PostgreSQL)
+and uploads to AWS S3. Also sends metrics a Prometheus through
+PushGateWay.
 
 ![alt schema-db](images/schema-backup-db.png)
 
