@@ -19,3 +19,13 @@ PushGateWay.
 | PUSHGATEWAY_HOST      	| PushGateWay hostname          	| pushgateway:9091  	|
 | PUSHGATEWAY_JOB       	| PushGateWay job name          	| POSTGRES_HOSTNAME 	|
 | GZIP                      | Compression ratio                 | -9                    |
+
+# Metrics
+|                           Name                           	|                        Description                       	|
+|:--------------------------------------------------------:	|:--------------------------------------------------------:	|
+| backup_db{label="redmic"}                                	| Outcome of the backup database job (0=failed, 1=success) 	|
+| backup_duration_seconds{label="redmic",stage="dump"}     	| Duration of create dump execution in seconds             	|
+| backup_duration_seconds{label="redmic",stage="compress"} 	| Duration of compress dump execution in seconds           	|
+| backup_duration_seconds{label="redmic",stage="upload"}   	| Duration of upload backup to S3 execution in seconds     	|
+| backup_size_bytes{label="redmic"}                        	| Duration of the script execution in seconds              	|
+| backup_created_date_seconds{label="redmic"}              	| Created date in seconds                                  	|

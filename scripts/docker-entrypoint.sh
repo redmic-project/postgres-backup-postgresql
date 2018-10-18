@@ -76,7 +76,7 @@ function compress() {
 	echo "Compressing backup"
 	local start_seconds=${SECONDS}
 
-	tar czf ${ZIP_FILENAME} ${DUMP_FILENAME}
+	tar czfj ${ZIP_FILENAME} ${DUMP_FILENAME}
 
 	COMPRESS_DURATION_SECONDS=$(( SECONDS - start_seconds ))
 	COMPRESS_SIZE=$( size_file "${ZIP_FILENAME}" )
@@ -126,9 +126,9 @@ backup_duration_seconds{label="${POSTGRES_HOSTNAME}",stage="upload"} ${UPLOAD_DU
 # HELP backup_duration_seconds_total duration of the script execution in seconds.
 # TYPE backup_duration_seconds_total gauge
 backup_duration_seconds_total{label="${POSTGRES_HOSTNAME}"} ${BACKUP_DURATION_SECONDS:-0}
-# HELP backup_size size of dump.
+# HELP backup_size size of backup in bytes.
 # TYPE backup_size gauge
-backup_size{label="${POSTGRES_HOSTNAME}"} ${COMPRESS_SIZE:-0}
+backup_size_bytes{label="${POSTGRES_HOSTNAME}"} ${COMPRESS_SIZE:-0}
 # HELP backup_created_date_seconds created date in seconds.
 # TYPE backup_created_date_seconds gauge
 backup_created_date_seconds{label="${POSTGRES_HOSTNAME}"} ${CREATED_DATE_SECONDS}
