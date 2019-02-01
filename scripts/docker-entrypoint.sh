@@ -164,6 +164,13 @@ function main() {
 	fi
 
 	BACKUP_DURATION_SECONDS=$(( SECONDS - start_seconds ))
+
+    if [ -z "${PUSHGATEWAY_HOST}" ]
+    then
+    	echo "Warning, 'PUSHGATEWAY_HOST' environment variable not defined, metrics cannot be published"
+	    exit 0
+    fi
+
 	push_metrics
 }
 
