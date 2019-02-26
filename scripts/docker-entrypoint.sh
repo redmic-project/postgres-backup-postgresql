@@ -76,7 +76,7 @@ function compress() {
 	echo "Compressing backup"
 	local start_seconds=${SECONDS}
 
-	tar czfj ${ZIP_FILENAME} ${DUMP_FILENAME}
+	tar cvzf ${ZIP_FILENAME} ${DUMP_FILENAME}
 
 	COMPRESS_DURATION_SECONDS=$(( SECONDS - start_seconds ))
 	COMPRESS_SIZE=$( size_file "${ZIP_FILENAME}" )
@@ -94,7 +94,7 @@ function upload_s3() {
 	echo "Uploading backup to S3"
 	local start_seconds=${SECONDS}
 
-	aws s3 cp ${POSTGRES_DUMP_PATH}/${ZIP_FILENAME} s3://${BUCKET_BACKUP_DB}
+	aws s3 cp ${POSTGRES_DUMP_PATH}/${ZIP_FILENAME} s3://${BUCKET_BACKUP_DB} --quiet
 
 	UPLOAD_DURATION_SECONDS=$(( SECONDS - start_seconds ))
 	echo "Uploaded backup"
