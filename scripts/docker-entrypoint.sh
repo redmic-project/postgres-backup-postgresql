@@ -3,7 +3,7 @@
 export PGPASSFILE="${POSTGRES_PASS_FILE}"
 
 NOW_DATE=$(date +%Y-%m-%d_%H_%M_%S)
-ZIP_FILENAME="${NOW_DATE}-backup.tar.gz"
+ZIP_FILENAME="${NOW_DATE}-backup.tar.xz"
 DUMP_FILENAME="${DUMP_FILENAME:-db.dump}"
 
 TIMEFORMAT="%R"
@@ -76,7 +76,7 @@ function compress() {
 	echo "Compressing backup"
 	local start_seconds=${SECONDS}
 
-	tar cvzf ${ZIP_FILENAME} ${DUMP_FILENAME}
+	tar cvJf ${ZIP_FILENAME} ${DUMP_FILENAME}
 
 	COMPRESS_DURATION_SECONDS=$(( SECONDS - start_seconds ))
 	COMPRESS_SIZE=$( size_file "${ZIP_FILENAME}" )
