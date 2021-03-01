@@ -2,9 +2,6 @@ include:
   - project: 'redmic-project/gitlab-ci-templates'
     ref: master
     file: '/packaging.yml'
-  - project: 'redmic-project/gitlab-ci-templates'
-    ref: master
-    file: '/deployment-custom-image.yml'
 
 stages:
   - pre-package
