@@ -32,6 +32,7 @@ ARG GLIBC_VER=2.33-r0
 ARG AWS_CLI_VERSION=2.0.30
 ENV GLIBC_VER=${GLIBC_VER}
 ENV AWS_CLI_VERSION=${AWS_CLI_VERSION}
+# hadolint ignore=DL3018
 RUN curl -sL https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub -o /etc/apk/keys/sgerrand.rsa.pub && \
 	curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VER}/glibc-${GLIBC_VER}.apk && \
 	curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VER}/glibc-bin-${GLIBC_VER}.apk && \
