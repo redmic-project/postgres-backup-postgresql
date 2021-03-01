@@ -4,6 +4,9 @@ FROM alpine:${ALPINE_IMAGE_TAG}
 
 LABEL maintainer="info@redmic.es"
 
+ARG POSTGRES_PASS_FILE="/root/.pgpass" \
+	POSTGRES_DUMP_PATH="/tmp/backup"
+
 ENV POSTGRES_PORT="5432" \
 	POSTGRES_PASS_FILE="/root/.pgpass" \
 	POSTGRES_DUMP_PATH="/tmp/backup" \
