@@ -114,7 +114,7 @@ function push_metrics() {
 	CREATED_DATE_SECONDS=$(date +%s)
 
 # No indent
-cat <<EOF | curl --data-binary @- ${PUSHGATEWAY_HOST}/metrics/job/${PUSHGATEWAY_JOB}
+cat <<EOF | curl -s --data-binary @- ${PUSHGATEWAY_HOST}/metrics/job/${PUSHGATEWAY_JOB}
 # HELP backup_db outcome of the backup database job (0=failed, 1=success).
 # TYPE backup_db gauge
 backup_db{label="${POSTGRES_HOSTNAME}"} ${NO_ERRORS}
@@ -147,7 +147,7 @@ function main() {
 	then
 		mkdir -p ${POSTGRES_DUMP_PATH}
 
-		# Create pgpass file if not exists it
+		# Create pgpass file if not exists
 		if [ ! -f ${PGPASSFILE} ]
 		then
 			create_pgpass
