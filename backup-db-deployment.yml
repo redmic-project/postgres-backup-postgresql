@@ -3,30 +3,42 @@ include:
     ref: master
     file: '/_deployment.yml'
 
-.deploy-backup-db:
-  extends: .deploy
+.deploy-backup-db-stage: &deploy-backup-db-stage
   stage: deploy-backup-db
-  variables:
+
+.deploy-backup-db:
+  variables: &deploy-backup-db-variables
     DEPLOY_DIR_NAME: deploy_backup-db
     BACKUP_DB_REPOSITORY_URL: https://gitlab.com/redmic-project/postgres/backup-db
     BACKUP_DB_REPOSITORY_BRANCH: master
     BACKUP_DB_DEPLOY_FILES: .env docker-compose.tmpl.yml docker-compose.dev.yml docker-compose.prod.yml
-  before_script: >
-    mkdir -p ${DEPLOY_DIR_NAME};
-    cd ${DEPLOY_DIR_NAME};
-    urlBase="${BACKUP_DB_REPOSITORY_URL}/-/raw/${BACKUP_DB_REPOSITORY_BRANCH}/deploy";
-    for deployFile in ${BACKUP_DB_DEPLOY_FILES}; do
-      curl -sO "$$(echo $${urlBase})/$${deployFile}";
-    done;
-    cd -;
+
+.deploy-backup-db-before_script: &deploy-backup-db-before_script
+  before_script:
+    - >
+      mkdir -p ${DEPLOY_DIR_NAME};
+      cd ${DEPLOY_DIR_NAME};
+      urlBase="${BACKUP_DB_REPOSITORY_URL}/-/raw/${BACKUP_DB_REPOSITORY_BRANCH}/deploy";
+      for deployFile in ${BACKUP_DB_DEPLOY_FILES}; do
+        curl -sO "$$(echo $${urlBase})/$${deployFile}";
+      done;
+      cd -;
 
 .deploy-backup-db-development:
   extends: .deploy-development
+  <<: *deploy-backup-db-stage
+  variables:
+    <<: *deploy-backup-db-variables
+  <<: *deploy-backup-db-before_script
   environment:
     name: dev/backup-db
 
 .deploy-backup-db-production:
   extends: .deploy-production
+  <<: *deploy-backup-db-stage
+  variables:
+    <<: *deploy-backup-db-variables
+  <<: *deploy-backup-db-before_script
   environment:
     name: pro/backup-db
 
