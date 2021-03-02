@@ -10,7 +10,7 @@ include:
   variables: &deploy-backup-db-variables
     DEPLOY_DIR_NAME: deploy_backup-db
     BACKUP_DB_REPOSITORY_URL: https://gitlab.com/redmic-project/postgres/backup-db
-    BACKUP_DB_REPOSITORY_BRANCH: master
+    BACKUP_DB_REPOSITORY_BRANCH: dev
     BACKUP_DB_DEPLOY_FILES: .env docker-compose.tmpl.yml docker-compose.dev.yml docker-compose.prod.yml
 
 .deploy-backup-db-before_script: &deploy-backup-db-before_script
