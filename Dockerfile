@@ -17,19 +17,22 @@ ENV POSTGRES_PORT="5432" \
 COPY scripts /
 
 ARG CURL_VERSION=7.74.0-r1
-ARG POSTGRESQL_CLIENT_VERSION=13.2-r0
+ARG POSTGRESQL_CLIENT_VERSION=10.12-r0
 ARG BASH_VERSION=5.1.0-r0
+ARG XZ_VERSION=5.2.5-r0
 RUN apk list \
 		curl \
 		postgresql-client \
 		bash \
 		glib \
-		groff && \
+		xz && \
+	echo "http://dl-cdn.alpinelinux.org/alpine/v3.8/main" >> /etc/apk/repositories && \
 	apk update && \
 	apk add --no-cache \
 		curl=${CURL_VERSION} \
 		postgresql-client=${POSTGRESQL_CLIENT_VERSION} \
-		bash=${BASH_VERSION}
+		bash=${BASH_VERSION} \
+		xz=${XZ_VERSION}
 
 ARG GLIBC_VER=2.33-r0
 ARG AWS_CLI_VERSION=2.0.30
