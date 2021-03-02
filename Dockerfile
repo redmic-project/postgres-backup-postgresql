@@ -17,9 +17,9 @@ ENV POSTGRES_PORT="5432" \
 COPY scripts /
 
 ARG CURL_VERSION=7.74.0-r1
-ARG POSTGRESQL_CLIENT_VERSION=10.12-r0
+ARG POSTGRESQL_CLIENT_VERSION=10.10-r0
 ARG BASH_VERSION=5.1.0-r0
-RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.8/main" >> /etc/apk/repositories && \
+RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.7/main" >> /etc/apk/repositories && \
 	apk update && \
 	apk list \
 		curl \
