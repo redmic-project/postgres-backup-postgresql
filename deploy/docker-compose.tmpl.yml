@@ -13,7 +13,6 @@ services:
         CURL_VERSION:
         POSTGRESQL_CLIENT_VERSION:
         BASH_VERSION:
-        XZ_VERSION:
         GLIBC_VER:
         AWS_CLI_VERSION:
     environment:
