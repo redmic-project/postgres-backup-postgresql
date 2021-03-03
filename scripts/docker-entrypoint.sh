@@ -91,10 +91,17 @@ function compress() {
 
 function upload_s3() {
 
-	echo "Uploading backup to S3"
 	local start_seconds=${SECONDS}
 
-	aws s3 cp ${POSTGRES_DUMP_PATH}/${ZIP_FILENAME} s3://${BUCKET_BACKUP_DB} --quiet
+	if [ -z ${UPLOAD_ENDPOINT_URL} ]
+	then
+		echo "Uploading backup to S3"
+	else
+		echo "Uploading backup to ${UPLOAD_ENDPOINT_URL}"
+		endpointUrlOverride="--endpoint-url ${UPLOAD_ENDPOINT_URL}"
+	fi
+
+	aws ${endpointUrlOverride} s3 cp ${POSTGRES_DUMP_PATH}/${ZIP_FILENAME} s3://${BUCKET_BACKUP_DB} --quiet
 
 	UPLOAD_DURATION_SECONDS=$(( SECONDS - start_seconds ))
 	echo "Uploaded backup"

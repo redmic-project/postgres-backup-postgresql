@@ -25,6 +25,7 @@ services:
       AWS_SECRET_ACCESS_KEY:
       AWS_DEFAULT_REGION:
       AWS_OUTPUT:
+      UPLOAD_ENDPOINT_URL:
       PUSHGATEWAY_HOST:
       PUSHGATEWAY_JOB:
     networks:
