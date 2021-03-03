@@ -7,3 +7,8 @@ stages:
   - pre-package
   - package
   - post-package
+
+.docker-build:
+  variables:
+    IMAGE_NAME_VARIABLE_NAME: BACKUP_DB_IMAGE_NAME
+    IMAGE_TAG_VARIABLE_NAME: BACKUP_DB_IMAGE_TAG

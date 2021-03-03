@@ -26,9 +26,9 @@ RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.7/main" >> /etc/apk/repositor
 		postgresql-client \
 		bash && \
 	apk add --no-cache \
-		curl=${CURL_VERSION} \
-		postgresql-client=${POSTGRESQL_CLIENT_VERSION} \
-		bash=${BASH_VERSION}
+		curl="${CURL_VERSION}" \
+		postgresql-client="${POSTGRESQL_CLIENT_VERSION}" \
+		bash="${BASH_VERSION}"
 
 ARG GLIBC_VERSION=2.33-r0 \
 	AWS_CLI_VERSION=2.0.30
