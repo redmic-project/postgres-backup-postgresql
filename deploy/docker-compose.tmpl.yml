@@ -2,10 +2,10 @@ version: '3.5'
 
 services:
   backup-db:
-    image: ${IMAGE_NAME:-registry.gitlab.com/redmic-project/postgres/backup-db}:${IMAGE_TAG:-latest}
+    image: ${BACKUP_DB_IMAGE_NAME:-registry.gitlab.com/redmic-project/postgres/backup-db}:${BACKUP_DB_IMAGE_TAG:-latest}
     build:
       context: ..
-      dockerfile: ${DOCKERFILE:-Dockerfile}
+      dockerfile: ${BACKUP_DB_DOCKERFILE:-Dockerfile}
       args:
         ALPINE_IMAGE_TAG:
         POSTGRES_PASS_FILE:
@@ -13,7 +13,7 @@ services:
         CURL_VERSION:
         POSTGRESQL_CLIENT_VERSION:
         BASH_VERSION:
-        GLIBC_VER:
+        GLIBC_VERSION:
         AWS_CLI_VERSION:
     environment:
       POSTGRES_USER:
@@ -32,17 +32,17 @@ services:
       metric-net:
     deploy:
       mode: replicated
-      replicas: ${REPLICAS:-1}
+      replicas: ${BACKUP_DB_REPLICAS:-1}
       restart_policy:
         condition: on-failure
-        delay: ${RESTART_DELAY:-30s}
+        delay: ${BACKUP_DB_RESTART_DELAY:-30s}
       resources:
         limits:
-          cpus: '${RESOURCES_LIMITS_CPUS:-0.5}'
-          memory: ${RESOURCES_LIMITS_MEMORY:-256M}
+          cpus: '${BACKUP_DB_RESOURCES_LIMITS_CPUS:-0.5}'
+          memory: ${BACKUP_DB_RESOURCES_LIMITS_MEMORY:-256M}
         reservations:
-          cpus: '${RESOURCES_RESERVATIONS_CPUS:-0.001}'
-          memory: ${RESOURCES_RESERVATIONS_MEMORY:-64M}
+          cpus: '${BACKUP_DB_RESOURCES_RESERVATIONS_CPUS:-0.001}'
+          memory: ${BACKUP_DB_RESOURCES_RESERVATIONS_MEMORY:-64M}
 
 networks:
   postgres-net:
