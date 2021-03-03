@@ -44,8 +44,8 @@ RUN curl -sL https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub -o /etc/apk/keys/
 		glibc.apk \
 		glibc-bin.apk && \
 	rm -rf \
-		glibc.apk && \
-		glibc-bin.apk && \
+		glibc.apk \
+		glibc-bin.apk \
 		/var/cache/apk/* && \
 	curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip" -o awscliv2.zip && \
 	unzip awscliv2.zip && \
