@@ -44,6 +44,7 @@ function size_file() {
 	echo "$(wc -c <"${1}")"
 }
 
+
 function dump_all() {
 
 	echo "Creating database backup"
@@ -102,7 +103,7 @@ function upload_s3() {
 		endpointUrlOverride="--endpoint-url ${UPLOAD_ENDPOINT_URL}"
 	fi
 
-	if aws ${endpointUrlOverride} s3 cp ${POSTGRES_DUMP_PATH}/${ZIP_FILENAME} s3://${BUCKET_BACKUP_DB} --quiet
+	if aws ${endpointUrlOverride} s3 cp ${POSTGRES_DUMP_PATH}/${ZIP_FILENAME} s3://${BUCKET_BACKUP_DB} --only-show-errors
 	then
 		UPLOAD_DURATION_SECONDS=$(( SECONDS - start_seconds ))
 		echo "Uploaded backup"
@@ -187,3 +188,10 @@ function main() {
 }
 
 main
+
+if [ ${NO_ERRORS} -eq 0 ]
+then
+	return 1;
+else
+	return 0;
+fi
