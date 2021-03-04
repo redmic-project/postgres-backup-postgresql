@@ -16,11 +16,10 @@ COPY scripts /
 ARG POSTGRES_PASS_FILE="/root/.pgpass" \
 	POSTGRES_DUMP_PATH="/tmp/backup" \
 	CURL_VERSION=7.74.0-r1 \
-	POSTGRESQL_CLIENT_VERSION=10.10-r0 \
+	POSTGRESQL_CLIENT_VERSION=13.2-r0 \
 	BASH_VERSION=5.1.0-r0
 
-RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.7/main" >> /etc/apk/repositories && \
-	apk update && \
+RUN apk update && \
 	apk list \
 		curl \
 		postgresql-client \
