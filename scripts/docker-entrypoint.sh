@@ -52,9 +52,10 @@ function dump_all() {
 	if pg_dumpall -h ${POSTGRES_HOSTNAME} -U ${POSTGRES_USER} --clean > ${POSTGRES_DUMP_PATH}/${DUMP_FILENAME}
 	then
 		DUMP_SIZE=$( size_file "${POSTGRES_DUMP_PATH}/${DUMP_FILENAME}" )
-		if [ ${DUMP_SIZE} -eq 0 ]; then
+		if [ ${DUMP_SIZE} -eq 0 ]
+		then
 			echo "ERROR created empty backup"
-			NO_ERRORS=1
+			NO_ERRORS=0
 		else
 			DUMP_DURATION_SECONDS=$(( SECONDS - start_seconds ))
 			echo "Backup created"
@@ -63,7 +64,7 @@ function dump_all() {
 		fi
 	else
 		echo "ERROR creating backup"
-		NO_ERRORS=1
+		NO_ERRORS=0
 	fi
 }
 
@@ -101,11 +102,15 @@ function upload_s3() {
 		endpointUrlOverride="--endpoint-url ${UPLOAD_ENDPOINT_URL}"
 	fi
 
-	aws ${endpointUrlOverride} s3 cp ${POSTGRES_DUMP_PATH}/${ZIP_FILENAME} s3://${BUCKET_BACKUP_DB} --quiet
-
-	UPLOAD_DURATION_SECONDS=$(( SECONDS - start_seconds ))
-	echo "Uploaded backup"
-	echo "Upload execution time (s): ${UPLOAD_DURATION_SECONDS}"
+	if aws ${endpointUrlOverride} s3 cp ${POSTGRES_DUMP_PATH}/${ZIP_FILENAME} s3://${BUCKET_BACKUP_DB} --quiet
+	then
+		UPLOAD_DURATION_SECONDS=$(( SECONDS - start_seconds ))
+		echo "Uploaded backup"
+		echo "Upload execution time (s): ${UPLOAD_DURATION_SECONDS}"
+	else
+		echo "Backup upload failed"
+		NO_ERRORS=0
+	fi
 }
 
 
@@ -172,11 +177,11 @@ function main() {
 
 	BACKUP_DURATION_SECONDS=$(( SECONDS - start_seconds ))
 
-    if [ -z "${PUSHGATEWAY_HOST}" ]
-    then
-    	echo "Warning, 'PUSHGATEWAY_HOST' environment variable not defined, metrics cannot be published"
-	    exit 0
-    fi
+	if [ -z "${PUSHGATEWAY_HOST}" ]
+	then
+		echo "Warning, 'PUSHGATEWAY_HOST' environment variable not defined, metrics cannot be published"
+		exit 0
+	fi
 
 	push_metrics
 }
