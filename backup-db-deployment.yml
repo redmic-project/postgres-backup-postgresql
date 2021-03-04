@@ -19,8 +19,9 @@ include:
       mkdir -p ${DEPLOY_DIR_NAME};
       cd ${DEPLOY_DIR_NAME};
       urlBase="${BACKUP_DB_REPOSITORY_URL}/-/raw/${BACKUP_DB_REPOSITORY_BRANCH}/deploy";
-      for deployFile in ${BACKUP_DB_DEPLOY_FILES}; do
-        wget -q "$$(echo $${urlBase})/$${deployFile}";
+      for deployFile in ${BACKUP_DB_DEPLOY_FILES};
+      do
+        wget -q "$${urlBase})/$${deployFile}";
       done;
       cd -;
 
