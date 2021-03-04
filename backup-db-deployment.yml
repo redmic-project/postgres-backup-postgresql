@@ -21,7 +21,7 @@ include:
       urlBase="${BACKUP_DB_REPOSITORY_URL}/-/raw/${BACKUP_DB_REPOSITORY_BRANCH}/deploy";
       for deployFile in ${BACKUP_DB_DEPLOY_FILES};
       do
-        wget -q "$${urlBase})/$${deployFile}";
+        wget -q "\${urlBase})/\${deployFile}";
       done;
       cd -;
 
