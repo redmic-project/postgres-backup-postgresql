@@ -20,7 +20,7 @@ include:
       cd ${DEPLOY_DIR_NAME};
       urlBase="${BACKUP_DB_REPOSITORY_URL}/-/raw/${BACKUP_DB_REPOSITORY_BRANCH}/deploy";
       for deployFile in ${BACKUP_DB_DEPLOY_FILES}; do
-        curl -sO "$$(echo $${urlBase})/$${deployFile}";
+        wget -q "$$(echo $${urlBase})/$${deployFile}";
       done;
       cd -;
 
