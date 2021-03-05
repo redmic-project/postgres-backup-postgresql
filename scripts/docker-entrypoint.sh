@@ -44,6 +44,7 @@ function size_file() {
 	echo "$(wc -c <"${1}")"
 }
 
+
 function dump_all() {
 
 	echo "Creating database backup"
@@ -52,9 +53,10 @@ function dump_all() {
 	if pg_dumpall -h ${POSTGRES_HOSTNAME} -U ${POSTGRES_USER} --clean > ${POSTGRES_DUMP_PATH}/${DUMP_FILENAME}
 	then
 		DUMP_SIZE=$( size_file "${POSTGRES_DUMP_PATH}/${DUMP_FILENAME}" )
-		if [ ${DUMP_SIZE} -eq 0 ]; then
+		if [ ${DUMP_SIZE} -eq 0 ]
+		then
 			echo "ERROR created empty backup"
-			NO_ERRORS=1
+			NO_ERRORS=0
 		else
 			DUMP_DURATION_SECONDS=$(( SECONDS - start_seconds ))
 			echo "Backup created"
@@ -63,7 +65,7 @@ function dump_all() {
 		fi
 	else
 		echo "ERROR creating backup"
-		NO_ERRORS=1
+		NO_ERRORS=0
 	fi
 }
 
@@ -91,14 +93,25 @@ function compress() {
 
 function upload_s3() {
 
-	echo "Uploading backup to S3"
 	local start_seconds=${SECONDS}
 
-	aws s3 cp ${POSTGRES_DUMP_PATH}/${ZIP_FILENAME} s3://${BUCKET_BACKUP_DB} --quiet
+	if [ -z ${UPLOAD_ENDPOINT_URL} ]
+	then
+		echo "Uploading backup to S3"
+	else
+		echo "Uploading backup to ${UPLOAD_ENDPOINT_URL}"
+		endpointUrlOverride="--endpoint-url ${UPLOAD_ENDPOINT_URL}"
+	fi
 
-	UPLOAD_DURATION_SECONDS=$(( SECONDS - start_seconds ))
-	echo "Uploaded backup"
-	echo "Upload execution time (s): ${UPLOAD_DURATION_SECONDS}"
+	if aws ${endpointUrlOverride} s3 cp ${POSTGRES_DUMP_PATH}/${ZIP_FILENAME} s3://${BUCKET_BACKUP_DB} --only-show-errors
+	then
+		UPLOAD_DURATION_SECONDS=$(( SECONDS - start_seconds ))
+		echo "Uploaded backup"
+		echo "Upload execution time (s): ${UPLOAD_DURATION_SECONDS}"
+	else
+		echo "Backup upload failed"
+		NO_ERRORS=0
+	fi
 }
 
 
@@ -114,7 +127,7 @@ function push_metrics() {
 	CREATED_DATE_SECONDS=$(date +%s)
 
 # No indent
-cat <<EOF | curl --data-binary @- ${PUSHGATEWAY_HOST}/metrics/job/${PUSHGATEWAY_JOB}
+cat <<EOF | curl -s --data-binary @- ${PUSHGATEWAY_HOST}/metrics/job/${PUSHGATEWAY_JOB}
 # HELP backup_db outcome of the backup database job (0=failed, 1=success).
 # TYPE backup_db gauge
 backup_db{label="${POSTGRES_HOSTNAME}"} ${NO_ERRORS}
@@ -147,7 +160,7 @@ function main() {
 	then
 		mkdir -p ${POSTGRES_DUMP_PATH}
 
-		# Create pgpass file if not exists it
+		# Create pgpass file if not exists
 		if [ ! -f ${PGPASSFILE} ]
 		then
 			create_pgpass
@@ -165,13 +178,20 @@ function main() {
 
 	BACKUP_DURATION_SECONDS=$(( SECONDS - start_seconds ))
 
-    if [ -z "${PUSHGATEWAY_HOST}" ]
-    then
-    	echo "Warning, 'PUSHGATEWAY_HOST' environment variable not defined, metrics cannot be published"
-	    exit 0
-    fi
+	if [ -z "${PUSHGATEWAY_HOST}" ]
+	then
+		echo "Warning, 'PUSHGATEWAY_HOST' environment variable not defined, metrics cannot be published"
+		exit 0
+	fi
 
 	push_metrics
 }
 
 main
+
+if [ ${NO_ERRORS} -eq 0 ]
+then
+	exit 1;
+else
+	exit 0;
+fi
