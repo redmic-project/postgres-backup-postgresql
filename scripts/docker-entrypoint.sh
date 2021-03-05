@@ -191,7 +191,7 @@ main
 
 if [ ${NO_ERRORS} -eq 0 ]
 then
-	return 1;
+	exit 1;
 else
-	return 0;
+	exit 0;
 fi
