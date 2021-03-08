@@ -5,21 +5,36 @@ Also sends metrics to Prometheus through Pushgateway.
 
 ![alt schema-db](images/schema-backup-db.png)
 
+## Build arguments
+
+|          Name             |              Description             |
+|---------------------------|--------------------------------------|
+| ALPINE_IMAGE_TAG          | Base Docker image tag                |
+| CURL_VERSION              | cURL dependency version              |
+| POSTGRESQL_CLIENT_VERSION | PostgreSQL-client dependency version |
+| BASH_VERSION              | Bash dependency version              |
+| GLIBC_VERSION             | glibc dependency version             |
+| AWS_CLI_VERSION           | AWS (cli v2) dependency version      |
+
 ## Variables
 
-|          Name         |          Description          |      Default      |
-|-----------------------|-------------------------------|-------------------|
-| POSTGRES_USER         | Database username             | postgres          |
-| POSTGRES_PASSWORD     | Database password             | password          |
-| POSTGRES_HOSTNAME     | Database hostname             | postgresql        |
-| POSTGRES_DUMP_PATH    | Temporal path                 | /tmp/backup       |
-| BUCKET_BACKUP_DB      | Bucket name for upload backup |                   |
-| AWS_ACCESS_KEY_ID     | Credentials AWS               |                   |
-| AWS_SECRET_ACCESS_KEY | Credentials AWS               |                   |
-| AWS_DEFAULT_REGION    | Region AWS                    | eu-west-1         |
-| PUSHGATEWAY_HOST      | PushGateWay hostname          | pushgateway:9091  |
-| PUSHGATEWAY_JOB       | PushGateWay job name          | POSTGRES_HOSTNAME |
-| GZIP                  | Compression ratio             | -9                |
+|          Name         |          Description            |        Default       |
+|-----------------------|---------------------------------|----------------------|
+| POSTGRES_USER         | Database username               | postgres             |
+| POSTGRES_PASSWORD     | Database password               | changeme             |
+| POSTGRES_HOSTNAME     | Database hostname               | changeme             |
+| POSTGRES_PORT         | Database port                   | 5432                 |
+| POSTGRES_DUMP_PATH    | Temporal path                   | /tmp/backup          |
+| POSTGRES_PASS_FILE    | PG credentials file path        | /root/.pgpass        |
+| DUMP_FILENAME         | File name for uploads           | db.dump              |
+| BUCKET_BACKUP_DB      | Bucket name for uploads         | backup-db            |
+| UPLOAD_ENDPOINT_URL   | URL for uploads (S3-compatible) |                      |
+| AWS_ACCESS_KEY_ID     | AWS credentials                 | changeme             |
+| AWS_SECRET_ACCESS_KEY | AWS credentials                 | changeme             |
+| AWS_DEFAULT_REGION    | AWS region                      | eu-west-1            |
+| AWS_OUTPUT            | AWS output format               | json                 |
+| PUSHGATEWAY_HOST      | Pushgateway hostname            | pushgateway:9091     |
+| PUSHGATEWAY_JOB       | Pushgateway job name            | ${POSTGRES_HOSTNAME} |
 
 ## Metrics
 
