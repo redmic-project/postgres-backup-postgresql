@@ -4,18 +4,17 @@ FROM alpine:${ALPINE_IMAGE_TAG}
 
 LABEL maintainer="info@redmic.es"
 
-ENV POSTGRES_PORT="5432" \
-	POSTGRES_PASS_FILE="/root/.pgpass" \
-	POSTGRES_DUMP_PATH="/tmp/backup" \
-	AWS_DEFAULT_REGION="eu-west-1" \
-	PUSHGATEWAY_HOST="pushgateway:9091" \
-	AWS_OUTPUT="json"
+ENV POSTGRES_USER=postgres \
+	POSTGRES_PORT=5432 \
+	POSTGRES_DUMP_PATH=/tmp/backup \
+	POSTGRES_PASS_FILE=/root/.pgpass \
+	AWS_DEFAULT_REGION=eu-west-1 \
+	PUSHGATEWAY_HOST=pushgateway:9091 \
+	AWS_OUTPUT=json
 
 COPY scripts /
 
-ARG POSTGRES_PASS_FILE="/root/.pgpass" \
-	POSTGRES_DUMP_PATH="/tmp/backup" \
-	CURL_VERSION=7.74.0-r1 \
+ARG CURL_VERSION=7.74.0-r1 \
 	POSTGRESQL_CLIENT_VERSION=13.2-r0 \
 	BASH_VERSION=5.1.0-r0
 
@@ -31,9 +30,6 @@ RUN apk update && \
 
 ARG GLIBC_VERSION=2.33-r0 \
 	AWS_CLI_VERSION=2.0.30
-
-ENV GLIBC_VERSION=${GLIBC_VERSION} \
-	AWS_CLI_VERSION=${AWS_CLI_VERSION}
 
 # hadolint ignore=DL3018
 RUN curl -sL https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub -o /etc/apk/keys/sgerrand.rsa.pub && \

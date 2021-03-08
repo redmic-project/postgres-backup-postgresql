@@ -2,14 +2,12 @@ version: '3.5'
 
 services:
   backup-postgresql:
-    image: ${BACKUP_POSTGRESQL_IMAGE_NAME:-registry.gitlab.com/redmic-project/postgres/backup-db}:${BACKUP_POSTGRESQL_IMAGE_TAG:-latest}
+    image: ${BACKUP_POSTGRESQL_IMAGE_NAME:-registry.gitlab.com/redmic-project/postgres/backup-postgresql}:${BACKUP_POSTGRESQL_IMAGE_TAG:-latest}
     build:
       context: ..
       dockerfile: ${BACKUP_POSTGRESQL_DOCKERFILE:-Dockerfile}
       args:
         ALPINE_IMAGE_TAG:
-        POSTGRES_PASS_FILE:
-        POSTGRES_DUMP_PATH:
         CURL_VERSION:
         POSTGRESQL_CLIENT_VERSION:
         BASH_VERSION:
@@ -20,12 +18,15 @@ services:
       POSTGRES_PASSWORD:
       POSTGRES_HOSTNAME:
       POSTGRES_PORT:
+      POSTGRES_DUMP_PATH:
+      POSTGRES_PASS_FILE:
+      DUMP_FILENAME:
       BUCKET_BACKUP_DB:
+      UPLOAD_ENDPOINT_URL:
       AWS_ACCESS_KEY_ID:
       AWS_SECRET_ACCESS_KEY:
       AWS_DEFAULT_REGION:
       AWS_OUTPUT:
-      UPLOAD_ENDPOINT_URL:
       PUSHGATEWAY_HOST:
       PUSHGATEWAY_JOB:
     networks:
