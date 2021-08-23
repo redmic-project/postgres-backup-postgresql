@@ -167,24 +167,26 @@ function main() {
 		fi
 
 		dump_all
+	fi
 
-		if [ ${NO_ERRORS} -eq 1 ]
+	if [ ${NO_ERRORS} -eq 1 ]
+	then
+		compress
+		upload_s3
+		clean_dump
+	fi
+
+	if [ ${NO_ERRORS} -eq 1 ]
+	then
+		BACKUP_DURATION_SECONDS=$(( SECONDS - start_seconds ))
+
+		if [ -z "${PUSHGATEWAY_HOST}" ]
 		then
-			compress
-			upload_s3
-			clean_dump
+			echo "Warning, 'PUSHGATEWAY_HOST' environment variable not defined, metrics cannot be published"
+		else
+			push_metrics
 		fi
 	fi
-
-	BACKUP_DURATION_SECONDS=$(( SECONDS - start_seconds ))
-
-	if [ -z "${PUSHGATEWAY_HOST}" ]
-	then
-		echo "Warning, 'PUSHGATEWAY_HOST' environment variable not defined, metrics cannot be published"
-		exit 0
-	fi
-
-	push_metrics
 }
 
 main
