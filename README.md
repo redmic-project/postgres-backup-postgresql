@@ -24,6 +24,7 @@ Also sends metrics to Prometheus through Pushgateway.
 | POSTGRES_PASSWORD     | Database password               | changeme             |
 | POSTGRES_HOSTNAME     | Database hostname               | changeme             |
 | POSTGRES_PORT         | Database port                   | 5432                 |
+| EXTRA_DUMP_PARAMS     | Additional params for dump      |                      |
 | POSTGRES_DUMP_PATH    | Temporal path                   | /tmp/backup          |
 | POSTGRES_PASS_FILE    | PG credentials file path        | /root/.pgpass        |
 | DUMP_FILENAME         | File name for uploads           | db.dump              |

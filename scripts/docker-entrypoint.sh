@@ -50,7 +50,7 @@ function dump_all() {
 	echo "Creating database backup"
 	local start_seconds=${SECONDS}
 
-	if pg_dumpall -h ${POSTGRES_HOSTNAME} -U ${POSTGRES_USER} --clean > ${POSTGRES_DUMP_PATH}/${DUMP_FILENAME}
+	if pg_dumpall -h ${POSTGRES_HOSTNAME} -U ${POSTGRES_USER} --clean --if-exists ${EXTRA_DUMP_PARAMS} > ${POSTGRES_DUMP_PATH}/${DUMP_FILENAME}
 	then
 		DUMP_SIZE=$( size_file "${POSTGRES_DUMP_PATH}/${DUMP_FILENAME}" )
 		if [ ${DUMP_SIZE} -eq 0 ]
