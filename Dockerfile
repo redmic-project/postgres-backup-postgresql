@@ -28,7 +28,7 @@ RUN apk update && \
 		postgresql14-client="${POSTGRESQL14_CLIENT_VERSION}" \
 		bash="${BASH_VERSION}"
 
-ARG GLIBC_VERSION=2.34-r0 \
+ARG GLIBC_VERSION=2.33-r0 \
 	AWS_CLI_VERSION=2.7.6
 
 # hadolint ignore=DL3018
