@@ -1,4 +1,4 @@
-ARG ALPINE_IMAGE_TAG=3.13
+ARG ALPINE_IMAGE_TAG=3.16.0
 
 FROM alpine:${ALPINE_IMAGE_TAG}
 
@@ -14,9 +14,9 @@ ENV POSTGRES_USER=postgres \
 
 COPY scripts /
 
-ARG CURL_VERSION=7.78.0-r0 \
-	POSTGRESQL_CLIENT_VERSION=13.4-r0 \
-	BASH_VERSION=5.1.0-r0
+ARG CURL_VERSION=7.83.1-r1 \
+	POSTGRESQL14_CLIENT_VERSION=14.3-r0 \
+	BASH_VERSION=5.1.16-r2
 
 RUN apk update && \
 	apk list \
@@ -25,11 +25,11 @@ RUN apk update && \
 		bash && \
 	apk add --no-cache \
 		curl="${CURL_VERSION}" \
-		postgresql-client="${POSTGRESQL_CLIENT_VERSION}" \
+		postgresql14-client="${POSTGRESQL14_CLIENT_VERSION}" \
 		bash="${BASH_VERSION}"
 
-ARG GLIBC_VERSION=2.33-r0 \
-	AWS_CLI_VERSION=2.0.30
+ARG GLIBC_VERSION=2.35-r0 \
+	AWS_CLI_VERSION=2.7.6
 
 # hadolint ignore=DL3018
 RUN curl -sL https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub -o /etc/apk/keys/sgerrand.rsa.pub && \

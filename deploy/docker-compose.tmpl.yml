@@ -9,7 +9,7 @@ services:
       args:
         ALPINE_IMAGE_TAG:
         CURL_VERSION:
-        POSTGRESQL_CLIENT_VERSION:
+        POSTGRESQL14_CLIENT_VERSION:
         BASH_VERSION:
         GLIBC_VERSION:
         AWS_CLI_VERSION:
