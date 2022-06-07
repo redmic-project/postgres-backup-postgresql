@@ -21,14 +21,14 @@ ARG CURL_VERSION=7.83.1-r1 \
 RUN apk update && \
 	apk list \
 		curl \
-		postgresql-client \
+		postgresql14-client \
 		bash && \
 	apk add --no-cache \
 		curl="${CURL_VERSION}" \
 		postgresql14-client="${POSTGRESQL14_CLIENT_VERSION}" \
 		bash="${BASH_VERSION}"
 
-ARG GLIBC_VERSION=2.35-r0 \
+ARG GLIBC_VERSION=2.34-r0 \
 	AWS_CLI_VERSION=2.7.6
 
 # hadolint ignore=DL3018
@@ -38,18 +38,18 @@ RUN curl -sL https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub -o /etc/apk/keys/
 	apk add --no-cache \
 		glibc.apk \
 		glibc-bin.apk && \
-	rm -rf \
-		glibc.apk \
-		glibc-bin.apk \
-		/var/cache/apk/* && \
 	curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip" -o awscliv2.zip && \
 	unzip awscliv2.zip && \
-	./aws/install && \
+	aws/install && \
+	aws --version && \
 	rm -rf \
 		awscliv2.zip \
-		./aws \
+		aws \
 		/usr/local/aws-cli/v2/*/dist/aws_completer \
 		/usr/local/aws-cli/v2/*/dist/awscli/data/ac.index \
-		/usr/local/aws-cli/v2/*/dist/awscli/examples
+		/usr/local/aws-cli/v2/*/dist/awscli/examples \
+		glibc.apk \
+		glibc-bin.apk \
+		/var/cache/apk/*
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
