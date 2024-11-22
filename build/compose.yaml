@@ -1,0 +1,14 @@
+services:
+  backup-postgresql:
+    image: ${BACKUP_POSTGRESQL_IMAGE_NAME:-registry.gitlab.com/redmic-project/postgres/backup-postgresql}:${BACKUP_POSTGRESQL_IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: ${BACKUP_POSTGRESQL_DOCKERFILE:-Dockerfile}
+      args:
+        ALPINE_IMAGE_TAG:
+        CURL_VERSION:
+        POSTGRESQL_CLIENT_NAME:
+        POSTGRESQL_CLIENT_VERSION:
+        BASH_VERSION:
+        GLIBC_VERSION:
+        AWS_CLI_VERSION:
