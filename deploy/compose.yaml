@@ -1,18 +1,6 @@
-version: '3.9'
-
 services:
   backup-postgresql:
     image: ${BACKUP_POSTGRESQL_IMAGE_NAME:-registry.gitlab.com/redmic-project/postgres/backup-postgresql}:${BACKUP_POSTGRESQL_IMAGE_TAG:-latest}
-    build:
-      context: ..
-      dockerfile: ${BACKUP_POSTGRESQL_DOCKERFILE:-Dockerfile}
-      args:
-        ALPINE_IMAGE_TAG:
-        CURL_VERSION:
-        POSTGRESQL14_CLIENT_VERSION:
-        BASH_VERSION:
-        GLIBC_VERSION:
-        AWS_CLI_VERSION:
     environment:
       POSTGRES_HOSTNAME:
       POSTGRES_PORT:
@@ -36,7 +24,7 @@ services:
       minio-net:
     deploy:
       mode: replicated
-      replicas: ${BACKUP_POSTGRESQL_REPLICAS:-1}
+      replicas: 1
       restart_policy:
         condition: on-failure
         delay: ${BACKUP_POSTGRESQL_RESTART_DELAY:-30s}
