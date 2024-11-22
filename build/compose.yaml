@@ -9,6 +9,5 @@ services:
         CURL_VERSION:
         POSTGRESQL_CLIENT_NAME:
         POSTGRESQL_CLIENT_VERSION:
-        BASH_VERSION:
-        GLIBC_VERSION:
         AWS_CLI_VERSION:
+        BASH_VERSION:

@@ -14,18 +14,17 @@ Also sends metrics to Prometheus through Pushgateway.
 | CURL_VERSION | cURL dependency version |
 | POSTGRESQL_CLIENT_NAME | PostgreSQL-client dependency name |
 | POSTGRESQL_CLIENT_VERSION | PostgreSQL-client dependency version |
-| BASH_VERSION | Bash dependency version |
-| GLIBC_VERSION | glibc dependency version |
 | AWS_CLI_VERSION | AWS (cli v2) dependency version |
+| BASH_VERSION | Bash dependency version |
 
 ## Variables
 
 | Name | Description | Default |
 |-|-|-|
-| POSTGRES_USER | Database username | postgres |
-| POSTGRES_PASSWORD | Database password | changeme |
 | POSTGRES_HOSTNAME | Database hostname | changeme |
 | POSTGRES_PORT | Database port | 5432 |
+| POSTGRES_USER | Database username | postgres |
+| POSTGRES_PASSWORD | Database password | changeme |
 | EXTRA_DUMP_PARAMS | Additional params for dump | |
 | POSTGRES_DUMP_PATH | Temporal path | /tmp/backup |
 | POSTGRES_PASS_FILE | PG credentials file path | /root/.pgpass |
