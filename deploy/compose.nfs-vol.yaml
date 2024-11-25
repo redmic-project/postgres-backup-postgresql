@@ -1,0 +1,8 @@
+volumes:
+  dump-vol:
+    name: ${DUMP_VOL_NAME}
+    driver: ${VOL_DRIVER:-local}
+    driver_opts:
+      type: ${VOL_TYPE:-nfs}
+      o: addr=${VOL_ADDR:-127.0.0.1},vers=${VOL_VERS:-4.1},${VOL_OPTS:-nolock,noacl,noatime,nodiratime}
+      device: :${VOL_DEVICE_PREFIX}${DUMP_VOL_DEVICE:-/backup-postgresql-dump-vol/}

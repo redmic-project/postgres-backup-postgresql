@@ -1,0 +1,4 @@
+volumes:
+  dump-vol:
+    name: ${DUMP_VOL_NAME}
+    driver: ${VOL_DRIVER:-local}
