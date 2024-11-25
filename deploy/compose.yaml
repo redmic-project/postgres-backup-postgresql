@@ -22,6 +22,8 @@ services:
       postgres-net:
       metric-net:
       minio-net:
+    volumes:
+      - dump-vol:${POSTGRES_DUMP_PATH}
     deploy:
       mode: replicated
       replicas: 1

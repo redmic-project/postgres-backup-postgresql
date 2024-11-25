@@ -1,0 +1,6 @@
+volumes:
+  dump-vol:
+    name: ${DUMP_VOL_NAME}
+    driver: ${VOL_DRIVER:-cloudstor:aws}
+    driver_opts:
+      backing: shared
