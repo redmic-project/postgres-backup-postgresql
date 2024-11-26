@@ -12,3 +12,320 @@ stages:
   variables:
     IMAGE_NAME_VARIABLE_NAME: BACKUP_POSTGRESQL_IMAGE_NAME
     IMAGE_TAG_VARIABLE_NAME: BACKUP_POSTGRESQL_IMAGE_TAG
+
+# versioned commons for building and tagging
+
+.docker-operations-versioned:
+  variables: &docker-operations-versioned-variables
+    PACKAGED_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_SLUG}/postgresql-${POSTGRESQL_VERSIONED_VALUE}
+    DOCKER_VERBOSE: 1
+
+.docker-tag-versioned:
+  variables: &docker-tag-versioned-variables
+    NEW_IMAGE_TAG: ${CI_COMMIT_TAG}-postgresql-${POSTGRESQL_VERSIONED_VALUE}
+
+# versioned postgresql-v12
+
+.postgresql-v12-build:
+  variables: &postgresql-v12-build-variables
+    POSTGRESQL_VERSIONED_VALUE: v12
+    DBLD_ALPINE_IMAGE_TAG: 3.18.9
+    DBLD_CURL_VERSION: 8.9.1-r1
+    DBLD_POSTGRESQL_CLIENT_NAME: postgresql12-client
+    DBLD_POSTGRESQL_CLIENT_VERSION: 12.20-r0
+    DBLD_AWS_CLI_VERSION: 2.15.14-r0
+    DBLD_BASH_VERSION: 5.2.15-r5
+
+docker-build-postgresql-v12-support-branch:
+  extends: docker-build-support-branch
+  variables:
+    <<: *postgresql-v12-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-build-postgresql-v12-stable-branch:
+  extends: docker-build-stable-branch
+  variables:
+    <<: *postgresql-v12-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-build-postgresql-v12-tag:
+  extends: docker-build-tag
+  variables:
+    <<: *postgresql-v12-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-tag-postgresql-v12-gitlab:
+  extends: docker-tag-gitlab
+  variables:
+    <<: *postgresql-v12-build-variables
+    <<: *docker-operations-versioned-variables
+    <<: *docker-tag-versioned-variables
+
+docker-tag-postgresql-v12-dockerhub:
+  extends: docker-tag-dockerhub
+  variables:
+    <<: *postgresql-v12-build-variables
+    <<: *docker-operations-versioned-variables
+    <<: *docker-tag-versioned-variables
+
+container_scanning-postgresql-v12:
+  extends: container_scanning
+  variables:
+    <<: *postgresql-v12-build-variables
+    <<: *docker-operations-versioned-variables
+    CS_IMAGE: ${PACKAGED_IMAGE_NAME}
+
+# versioned postgresql-v13
+
+.postgresql-v13-build:
+  variables: &postgresql-v13-build-variables
+    POSTGRESQL_VERSIONED_VALUE: v13
+    DBLD_ALPINE_IMAGE_TAG: 3.18.9
+    DBLD_CURL_VERSION: 8.9.1-r1
+    DBLD_POSTGRESQL_CLIENT_NAME: postgresql13-client
+    DBLD_POSTGRESQL_CLIENT_VERSION: 13.17-r0
+    DBLD_AWS_CLI_VERSION: 2.15.14-r0
+    DBLD_BASH_VERSION: 5.2.15-r5
+
+docker-build-postgresql-v13-support-branch:
+  extends: docker-build-support-branch
+  variables:
+    <<: *postgresql-v13-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-build-postgresql-v13-stable-branch:
+  extends: docker-build-stable-branch
+  variables:
+    <<: *postgresql-v13-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-build-postgresql-v13-tag:
+  extends: docker-build-tag
+  variables:
+    <<: *postgresql-v13-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-tag-postgresql-v13-gitlab:
+  extends: docker-tag-gitlab
+  variables:
+    <<: *postgresql-v13-build-variables
+    <<: *docker-operations-versioned-variables
+    <<: *docker-tag-versioned-variables
+
+docker-tag-postgresql-v13-dockerhub:
+  extends: docker-tag-dockerhub
+  variables:
+    <<: *postgresql-v13-build-variables
+    <<: *docker-operations-versioned-variables
+    <<: *docker-tag-versioned-variables
+
+container_scanning-postgresql-v13:
+  extends: container_scanning
+  variables:
+    <<: *postgresql-v13-build-variables
+    <<: *docker-operations-versioned-variables
+    CS_IMAGE: ${PACKAGED_IMAGE_NAME}
+
+# versioned postgresql-v14
+
+.postgresql-v14-build:
+  variables: &postgresql-v14-build-variables
+    POSTGRESQL_VERSIONED_VALUE: v14
+    DBLD_ALPINE_IMAGE_TAG: 3.18.9
+    DBLD_CURL_VERSION: 8.9.1-r1
+    DBLD_POSTGRESQL_CLIENT_NAME: postgresql14-client
+    DBLD_POSTGRESQL_CLIENT_VERSION: 14.14-r0
+    DBLD_AWS_CLI_VERSION: 2.15.14-r0
+    DBLD_BASH_VERSION: 5.2.15-r5
+
+docker-build-postgresql-v14-support-branch:
+  extends: docker-build-support-branch
+  variables:
+    <<: *postgresql-v14-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-build-postgresql-v14-stable-branch:
+  extends: docker-build-stable-branch
+  variables:
+    <<: *postgresql-v14-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-build-postgresql-v14-tag:
+  extends: docker-build-tag
+  variables:
+    <<: *postgresql-v14-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-tag-postgresql-v14-gitlab:
+  extends: docker-tag-gitlab
+  variables:
+    <<: *postgresql-v14-build-variables
+    <<: *docker-operations-versioned-variables
+    <<: *docker-tag-versioned-variables
+
+docker-tag-postgresql-v14-dockerhub:
+  extends: docker-tag-dockerhub
+  variables:
+    <<: *postgresql-v14-build-variables
+    <<: *docker-operations-versioned-variables
+    <<: *docker-tag-versioned-variables
+
+container_scanning-postgresql-v14:
+  extends: container_scanning
+  variables:
+    <<: *postgresql-v14-build-variables
+    <<: *docker-operations-versioned-variables
+    CS_IMAGE: ${PACKAGED_IMAGE_NAME}
+
+# versioned postgresql-v15
+
+.postgresql-v15-build:
+  variables: &postgresql-v15-build-variables
+    POSTGRESQL_VERSIONED_VALUE: v15
+    DBLD_ALPINE_IMAGE_TAG: 3.18.9
+    DBLD_CURL_VERSION: 8.9.1-r1
+    DBLD_POSTGRESQL_CLIENT_NAME: postgresql15-client
+    DBLD_POSTGRESQL_CLIENT_VERSION: 15.9-r0
+    DBLD_AWS_CLI_VERSION: 2.15.14-r0
+    DBLD_BASH_VERSION: 5.2.15-r5
+
+docker-build-postgresql-v15-support-branch:
+  extends: docker-build-support-branch
+  variables:
+    <<: *postgresql-v15-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-build-postgresql-v15-stable-branch:
+  extends: docker-build-stable-branch
+  variables:
+    <<: *postgresql-v15-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-build-postgresql-v15-tag:
+  extends: docker-build-tag
+  variables:
+    <<: *postgresql-v15-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-tag-postgresql-v15-gitlab:
+  extends: docker-tag-gitlab
+  variables:
+    <<: *postgresql-v15-build-variables
+    <<: *docker-operations-versioned-variables
+    <<: *docker-tag-versioned-variables
+
+docker-tag-postgresql-v15-dockerhub:
+  extends: docker-tag-dockerhub
+  variables:
+    <<: *postgresql-v15-build-variables
+    <<: *docker-operations-versioned-variables
+    <<: *docker-tag-versioned-variables
+
+container_scanning-postgresql-v15:
+  extends: container_scanning
+  variables:
+    <<: *postgresql-v15-build-variables
+    <<: *docker-operations-versioned-variables
+    CS_IMAGE: ${PACKAGED_IMAGE_NAME}
+
+# versioned postgresql-v16
+
+.postgresql-v16-build:
+  variables: &postgresql-v16-build-variables
+    POSTGRESQL_VERSIONED_VALUE: v16
+    DBLD_ALPINE_IMAGE_TAG: 3.20.3
+    DBLD_CURL_VERSION: 8.11.0-r2
+    DBLD_POSTGRESQL_CLIENT_NAME: postgresql16-client
+    DBLD_POSTGRESQL_CLIENT_VERSION: 16.6-r0
+    DBLD_AWS_CLI_VERSION: 2.15.57-r0
+    DBLD_BASH_VERSION: 5.2.26-r0
+
+docker-build-postgresql-v16-support-branch:
+  extends: docker-build-support-branch
+  variables:
+    <<: *postgresql-v16-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-build-postgresql-v16-stable-branch:
+  extends: docker-build-stable-branch
+  variables:
+    <<: *postgresql-v16-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-build-postgresql-v16-tag:
+  extends: docker-build-tag
+  variables:
+    <<: *postgresql-v16-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-tag-postgresql-v16-gitlab:
+  extends: docker-tag-gitlab
+  variables:
+    <<: *postgresql-v16-build-variables
+    <<: *docker-operations-versioned-variables
+    <<: *docker-tag-versioned-variables
+
+docker-tag-postgresql-v16-dockerhub:
+  extends: docker-tag-dockerhub
+  variables:
+    <<: *postgresql-v16-build-variables
+    <<: *docker-operations-versioned-variables
+    <<: *docker-tag-versioned-variables
+
+container_scanning-postgresql-v16:
+  extends: container_scanning
+  variables:
+    <<: *postgresql-v16-build-variables
+    <<: *docker-operations-versioned-variables
+    CS_IMAGE: ${PACKAGED_IMAGE_NAME}
+
+# versioned postgresql-v17
+
+.postgresql-v17-build:
+  variables: &postgresql-v17-build-variables
+    POSTGRESQL_VERSIONED_VALUE: v17
+    DBLD_ALPINE_IMAGE_TAG: edge
+    DBLD_CURL_VERSION: 8.11.0-r2
+    DBLD_POSTGRESQL_CLIENT_NAME: postgresql17-client
+    DBLD_POSTGRESQL_CLIENT_VERSION: 17.2-r0
+    DBLD_AWS_CLI_VERSION: 2.22.2-r0
+    DBLD_BASH_VERSION: 5.2.37-r0
+
+docker-build-postgresql-v17-support-branch:
+  extends: docker-build-support-branch
+  variables:
+    <<: *postgresql-v17-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-build-postgresql-v17-stable-branch:
+  extends: docker-build-stable-branch
+  variables:
+    <<: *postgresql-v17-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-build-postgresql-v17-tag:
+  extends: docker-build-tag
+  variables:
+    <<: *postgresql-v17-build-variables
+    <<: *docker-operations-versioned-variables
+
+docker-tag-postgresql-v17-gitlab:
+  extends: docker-tag-gitlab
+  variables:
+    <<: *postgresql-v17-build-variables
+    <<: *docker-operations-versioned-variables
+    <<: *docker-tag-versioned-variables
+
+docker-tag-postgresql-v17-dockerhub:
+  extends: docker-tag-dockerhub
+  variables:
+    <<: *postgresql-v17-build-variables
+    <<: *docker-operations-versioned-variables
+    <<: *docker-tag-versioned-variables
+
+container_scanning-postgresql-v17:
+  extends: container_scanning
+  variables:
+    <<: *postgresql-v17-build-variables
+    <<: *docker-operations-versioned-variables
+    CS_IMAGE: ${PACKAGED_IMAGE_NAME}
