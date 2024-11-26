@@ -17,13 +17,13 @@ stages:
 
 .docker-operations-versioned:
   variables: &docker-operations-versioned-variables
-    PACKAGED_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/postgresql-${POSTGRESQL_VERSIONED_VALUE}/${CI_COMMIT_REF_SLUG}
+    PACKAGED_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_SLUG}/postgresql-${POSTGRESQL_VERSIONED_VALUE}
 
 .docker-tag-versioned:
   variables: &docker-tag-versioned-variables
     NEW_IMAGE_TAG: ${CI_COMMIT_TAG}-postgresql-${POSTGRESQL_VERSIONED_VALUE}
 
-# postgresql-v12
+# versioned postgresql-v12
 
 .postgresql-v12-build:
   variables: &postgresql-v12-build-variables
@@ -69,12 +69,12 @@ docker-tag-postgresql-v12-dockerhub:
 
 container_scanning-postgresql-v12:
   extends: container_scanning
-  variables: &docker-operations-versioned-variables
+  variables:
     <<: *postgresql-v12-build-variables
     <<: *docker-operations-versioned-variables
     CS_IMAGE: ${PACKAGED_IMAGE_NAME}
 
-# postgresql-v13
+# versioned postgresql-v13
 
 .postgresql-v13-build:
   variables: &postgresql-v13-build-variables
@@ -120,12 +120,12 @@ docker-tag-postgresql-v13-dockerhub:
 
 container_scanning-postgresql-v13:
   extends: container_scanning
-  variables: &docker-operations-versioned-variables
+  variables:
     <<: *postgresql-v13-build-variables
     <<: *docker-operations-versioned-variables
     CS_IMAGE: ${PACKAGED_IMAGE_NAME}
 
-# postgresql-v14
+# versioned postgresql-v14
 
 .postgresql-v14-build:
   variables: &postgresql-v14-build-variables
@@ -171,12 +171,12 @@ docker-tag-postgresql-v14-dockerhub:
 
 container_scanning-postgresql-v14:
   extends: container_scanning
-  variables: &docker-operations-versioned-variables
+  variables:
     <<: *postgresql-v14-build-variables
     <<: *docker-operations-versioned-variables
     CS_IMAGE: ${PACKAGED_IMAGE_NAME}
 
-# postgresql-v15
+# versioned postgresql-v15
 
 .postgresql-v15-build:
   variables: &postgresql-v15-build-variables
@@ -222,12 +222,12 @@ docker-tag-postgresql-v15-dockerhub:
 
 container_scanning-postgresql-v15:
   extends: container_scanning
-  variables: &docker-operations-versioned-variables
+  variables:
     <<: *postgresql-v15-build-variables
     <<: *docker-operations-versioned-variables
     CS_IMAGE: ${PACKAGED_IMAGE_NAME}
 
-# postgresql-v16
+# versioned postgresql-v16
 
 .postgresql-v16-build:
   variables: &postgresql-v16-build-variables
@@ -273,12 +273,12 @@ docker-tag-postgresql-v16-dockerhub:
 
 container_scanning-postgresql-v16:
   extends: container_scanning
-  variables: &docker-operations-versioned-variables
+  variables:
     <<: *postgresql-v16-build-variables
     <<: *docker-operations-versioned-variables
     CS_IMAGE: ${PACKAGED_IMAGE_NAME}
 
-# postgresql-v17
+# versioned postgresql-v17
 
 .postgresql-v17-build:
   variables: &postgresql-v17-build-variables
@@ -324,7 +324,7 @@ docker-tag-postgresql-v17-dockerhub:
 
 container_scanning-postgresql-v17:
   extends: container_scanning
-  variables: &docker-operations-versioned-variables
+  variables:
     <<: *postgresql-v17-build-variables
     <<: *docker-operations-versioned-variables
     CS_IMAGE: ${PACKAGED_IMAGE_NAME}
