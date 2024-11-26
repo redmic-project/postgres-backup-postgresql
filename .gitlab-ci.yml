@@ -18,6 +18,7 @@ stages:
 .docker-operations-versioned:
   variables: &docker-operations-versioned-variables
     PACKAGED_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_SLUG}/postgresql-${POSTGRESQL_VERSIONED_VALUE}
+    DOCKER_VERBOSE: 1
 
 .docker-tag-versioned:
   variables: &docker-tag-versioned-variables
@@ -286,7 +287,7 @@ container_scanning-postgresql-v16:
     DBLD_ALPINE_IMAGE_TAG: edge
     DBLD_CURL_VERSION: 8.11.0-r2
     DBLD_POSTGRESQL_CLIENT_NAME: postgresql17-client
-    DBLD_POSTGRESQL_CLIENT_VERSION: 17.1-r0
+    DBLD_POSTGRESQL_CLIENT_VERSION: 17.2-r0
     DBLD_AWS_CLI_VERSION: 2.22.2-r0
     DBLD_BASH_VERSION: 5.2.37-r0
 
