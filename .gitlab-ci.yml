@@ -68,9 +68,11 @@ docker-tag-postgresql-v12-dockerhub:
     <<: *docker-tag-versioned-variables
 
 container_scanning-postgresql-v12:
+  extends: container_scanning
   variables: &docker-operations-versioned-variables
     <<: *postgresql-v12-build-variables
-    CS_IMAGE: ${CI_REGISTRY_IMAGE}/postgresql-${POSTGRESQL_VERSIONED_VALUE}/${CI_COMMIT_REF_SLUG}
+    <<: *docker-operations-versioned-variables
+    CS_IMAGE: ${PACKAGED_IMAGE_NAME}
 
 # postgresql-v13
 
@@ -117,9 +119,11 @@ docker-tag-postgresql-v13-dockerhub:
     <<: *docker-tag-versioned-variables
 
 container_scanning-postgresql-v13:
+  extends: container_scanning
   variables: &docker-operations-versioned-variables
     <<: *postgresql-v13-build-variables
-    CS_IMAGE: ${CI_REGISTRY_IMAGE}/postgresql-${POSTGRESQL_VERSIONED_VALUE}/${CI_COMMIT_REF_SLUG}
+    <<: *docker-operations-versioned-variables
+    CS_IMAGE: ${PACKAGED_IMAGE_NAME}
 
 # postgresql-v14
 
@@ -166,9 +170,11 @@ docker-tag-postgresql-v14-dockerhub:
     <<: *docker-tag-versioned-variables
 
 container_scanning-postgresql-v14:
+  extends: container_scanning
   variables: &docker-operations-versioned-variables
     <<: *postgresql-v14-build-variables
-    CS_IMAGE: ${CI_REGISTRY_IMAGE}/postgresql-${POSTGRESQL_VERSIONED_VALUE}/${CI_COMMIT_REF_SLUG}
+    <<: *docker-operations-versioned-variables
+    CS_IMAGE: ${PACKAGED_IMAGE_NAME}
 
 # postgresql-v15
 
@@ -215,9 +221,11 @@ docker-tag-postgresql-v15-dockerhub:
     <<: *docker-tag-versioned-variables
 
 container_scanning-postgresql-v15:
+  extends: container_scanning
   variables: &docker-operations-versioned-variables
     <<: *postgresql-v15-build-variables
-    CS_IMAGE: ${CI_REGISTRY_IMAGE}/postgresql-${POSTGRESQL_VERSIONED_VALUE}/${CI_COMMIT_REF_SLUG}
+    <<: *docker-operations-versioned-variables
+    CS_IMAGE: ${PACKAGED_IMAGE_NAME}
 
 # postgresql-v16
 
@@ -264,9 +272,11 @@ docker-tag-postgresql-v16-dockerhub:
     <<: *docker-tag-versioned-variables
 
 container_scanning-postgresql-v16:
+  extends: container_scanning
   variables: &docker-operations-versioned-variables
     <<: *postgresql-v16-build-variables
-    CS_IMAGE: ${CI_REGISTRY_IMAGE}/postgresql-${POSTGRESQL_VERSIONED_VALUE}/${CI_COMMIT_REF_SLUG}
+    <<: *docker-operations-versioned-variables
+    CS_IMAGE: ${PACKAGED_IMAGE_NAME}
 
 # postgresql-v17
 
@@ -313,6 +323,8 @@ docker-tag-postgresql-v17-dockerhub:
     <<: *docker-tag-versioned-variables
 
 container_scanning-postgresql-v17:
+  extends: container_scanning
   variables: &docker-operations-versioned-variables
     <<: *postgresql-v17-build-variables
-    CS_IMAGE: ${CI_REGISTRY_IMAGE}/postgresql-${POSTGRESQL_VERSIONED_VALUE}/${CI_COMMIT_REF_SLUG}
+    <<: *docker-operations-versioned-variables
+    CS_IMAGE: ${PACKAGED_IMAGE_NAME}
