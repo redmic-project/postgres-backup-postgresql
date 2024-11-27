@@ -23,6 +23,7 @@ stages:
 .docker-tag-versioned:
   variables: &docker-tag-versioned-variables
     NEW_IMAGE_TAG: ${CI_COMMIT_TAG}-postgresql-${POSTGRESQL_VERSIONED_VALUE}
+    LATEST_TAG_VALUE: latest-postgresql-${POSTGRESQL_VERSIONED_VALUE}
 
 # versioned postgresql-v12
 
